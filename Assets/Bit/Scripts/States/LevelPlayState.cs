@@ -220,8 +220,9 @@ namespace Bit
                         bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
                         bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
                         bool isBoxCollidingKey = IsCollidingKeys(boxMoveX, boxMoveY);
+                        bool isBoxCollidingLocks = IsCollidingLocks(boxMoveX, boxMoveY);
 
-                        playerCanMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingKey;
+                        playerCanMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingKey && !isBoxCollidingLocks;
 
                         if (playerCanMove)
                         {
@@ -276,8 +277,9 @@ namespace Bit
                         bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
                         bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
                         bool isBoxCollidingKey = IsCollidingKeys(boxMoveX, boxMoveY);
+                        bool isBoxCollidingLocks = IsCollidingLocks(boxMoveX, boxMoveY);
 
-                        playerCanMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingKey;
+                        playerCanMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingKey && !isBoxCollidingLocks;
 
                         if (playerCanMove)
                         {

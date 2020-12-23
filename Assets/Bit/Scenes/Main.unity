@@ -609,6 +609,7 @@ MonoBehaviour:
   - {fileID: 5050793841709067836, guid: 07162ae9e59bb264dbbf4b818e4243af, type: 3}
   - {fileID: 5050793841709067836, guid: f21c245fc77593c4dafc14f52ba1fef4, type: 3}
   - {fileID: 5050793841709067836, guid: 097d2e7e66a68664b8ac54fdf01fd155, type: 3}
+  - {fileID: 5050793841709067836, guid: 9c5fb6efa67227a4580fd32cf68b03a8, type: 3}
   mainMenuPanelObject: {fileID: 7953326}
   levelEnterPanelObject: {fileID: 1630567028}
   levelPlayPanelObject: {fileID: 318466122}
