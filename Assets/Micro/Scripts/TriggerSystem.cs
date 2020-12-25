@@ -45,13 +45,13 @@ namespace Micro
             {
                 foreach (Box b in config.boxes)
                 {
-                    if (sw.gridX == b.gridX && sw.gridY == b.gridY)
+                    if (sw.config.gridX == b.config.gridX && sw.config.gridY == b.config.gridY)
                     {
                         sw.ToggleSwitchOn();
                     }
                 }
 
-                if(sw.gridX == config.player.gridX && sw.gridY == config.player.gridY)
+                if(sw.config.gridX == config.player.config.gridX && sw.config.gridY == config.player.config.gridY)
                 {
                     sw.ToggleSwitchOn();
                 }

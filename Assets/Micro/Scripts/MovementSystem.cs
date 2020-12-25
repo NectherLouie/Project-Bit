@@ -19,12 +19,14 @@ namespace Micro
             public Player player;
             public List<Box> boxes = new List<Box>();
             public List<Wall> walls = new List<Wall>();
+            public List<Gate> gates = new List<Gate>();
 
             public void ResetGameObjects()
             {
                 player = null;
                 boxes.Clear();
                 walls.Clear();
+                gates.Clear();
             }
 
             public void ResetPlayData()
@@ -35,7 +37,18 @@ namespace Micro
             }
         }
 
+        public class MoveConfig
+        {
+            public Vector2 playerMove;
+            public Vector2 playerGrid;
+
+            public Vector2 playerTargetMove;
+            public Vector2 playerTargetGrid;
+        }
+
         public Config config = new Config();
+
+        private MoveConfig moveConfig = new MoveConfig();
 
         public void Init(LevelSystem.Config pConfig)
         {
@@ -45,6 +58,7 @@ namespace Micro
             config.player = pConfig.player;
             config.boxes = pConfig.boxes;
             config.walls = pConfig.walls;
+            config.gates = pConfig.gates;
         }
 
         public void Move(int pVertical, int pHorizontal)
@@ -72,27 +86,29 @@ namespace Micro
 
         private bool TryMoveVertical()
         {
-            int playerMoveX = config.player.gridX;
-            int playerMoveY = config.player.gridY + config.vertical;
+            int playerMoveX = config.player.config.gridX;
+            int playerMoveY = config.player.config.gridY + config.vertical;
 
             // Check impassables
             bool isPlayerCollidingWalls = IsCollidingWalls(playerMoveX, playerMoveY);
-            bool canMove = !isPlayerCollidingWalls;
+            bool isPlayerCollidingGates = IsCollidingGates(playerMoveX, playerMoveY);
+            bool canMove = !isPlayerCollidingWalls && !isPlayerCollidingGates;
 
             // Check movables
             for (int boxIndex = 0; boxIndex < config.boxes.Count; ++boxIndex)
             {
                 Box box = config.boxes[boxIndex];
 
-                if (box.gridX == playerMoveX && box.gridY == playerMoveY)
+                if (box.config.gridX == playerMoveX && box.config.gridY == playerMoveY)
                 {
-                    int boxMoveX = box.gridX;
-                    int boxMoveY = box.gridY + config.vertical;
+                    int boxMoveX = box.config.gridX;
+                    int boxMoveY = box.config.gridY + config.vertical;
 
                     bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
                     bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
+                    bool isBoxCollidingGates = IsCollidingGates(boxMoveX, boxMoveY);
 
-                    canMove = !isBoxCollidingWall && !isBoxCollidingBox;
+                    canMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingGates;
 
                     if (canMove)
                     {
@@ -106,27 +122,29 @@ namespace Micro
 
         private bool TryMoveHorizontal()
         {
-            int playerMoveX = config.player.gridX + config.horizontal;
-            int playerMoveY = config.player.gridY;
+            int playerMoveX = config.player.config.gridX + config.horizontal;
+            int playerMoveY = config.player.config.gridY;
 
             // check impassables
             bool isPlayerCollidingWalls = IsCollidingWalls(playerMoveX, playerMoveY);
-            bool canMove = !isPlayerCollidingWalls;
+            bool isPlayerCollidingGates = IsCollidingGates(playerMoveX, playerMoveY);
+            bool canMove = !isPlayerCollidingWalls && !isPlayerCollidingGates;
 
             // Check movables
             for (int boxIndex = 0; boxIndex < config.boxes.Count; ++boxIndex)
             {
                 Box box = config.boxes[boxIndex];
 
-                if (box.gridX == playerMoveX && box.gridY == playerMoveY)
+                if (box.config.gridX == playerMoveX && box.config.gridY == playerMoveY)
                 {
-                    int boxMoveX = box.gridX + config.horizontal;
-                    int boxMoveY = box.gridY;
+                    int boxMoveX = box.config.gridX + config.horizontal;
+                    int boxMoveY = box.config.gridY;
 
                     bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
                     bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
+                    bool isBoxCollidingGates = IsCollidingGates(boxMoveX, boxMoveY);
 
-                    canMove = !isBoxCollidingWall && !isBoxCollidingBox;
+                    canMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingGates;
 
                     if (canMove)
                     {
@@ -140,29 +158,29 @@ namespace Micro
 
         public void UpdateMovements()
         {
-            float movePlayerX = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
-            float movePlayerY = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
+            moveConfig.playerMove.x = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
+            moveConfig.playerMove.y = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
+            
+            config.player.MovePosition(moveConfig.playerMove.x, moveConfig.playerMove.y);
 
-            config.player.MovePosition(movePlayerX, movePlayerY);
+            moveConfig.playerGrid.x = config.horizontal != 0 ? config.horizontal : 0;
+            moveConfig.playerGrid.y = config.vertical != 0 ? config.vertical : 0;
 
-            int moveGridX = config.horizontal != 0 ? config.horizontal : 0;
-            int moveGridY = config.vertical != 0 ? config.vertical : 0;
-
-            config.player.MoveGrid(moveGridX, moveGridY);
+            config.player.MoveGrid((int)moveConfig.playerGrid.x, (int)moveConfig.playerGrid.y);
 
             if (config.player.target != null)
             {
                 Movable playerTarget = config.player.target;
 
-                float moveTargetX = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
-                float moveTargetY = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
+                moveConfig.playerTargetMove.x = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
+                moveConfig.playerTargetMove.y = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
 
-                playerTarget.MovePosition(moveTargetX, moveTargetY);
+                playerTarget.MovePosition(moveConfig.playerTargetMove.x, moveConfig.playerTargetMove.y);
 
-                int gridTargetX = config.horizontal != 0 ? config.horizontal : 0;
-                int gridTargetY = config.vertical != 0 ? config.vertical : 0;
+                moveConfig.playerTargetGrid.x = config.horizontal != 0 ? config.horizontal : 0;
+                moveConfig.playerTargetGrid.y = config.vertical != 0 ? config.vertical : 0;
 
-                playerTarget.MoveGrid(gridTargetX, gridTargetY);
+                playerTarget.MoveGrid((int)moveConfig.playerTargetGrid.x, (int)moveConfig.playerTargetGrid.y);
 
                 config.player.target = null;
             }
@@ -181,11 +199,28 @@ namespace Micro
             {
                 var wall = config.walls[wallIndex];
 
-                if (wall.gridX == gridX && wall.gridY == gridY)
+                if (wall.config.gridX == gridX && wall.config.gridY == gridY)
+                {
+                    output = true;
+                }
+            }
+
+            return output;
+        }
+
+        private bool IsCollidingGates(int gridX, int gridY)
+        {
+            bool output = false;
+
+            for (int i = 0; i < config.gates.Count; ++i)
+            {
+                var gate = config.gates[i];
+
+                if (gate.config.gridX == gridX && gate.config.gridY == gridY)
                 {
                     output = true;
 
-                    if (wall.hasTriggeredSwitch)
+                    if (gate.hasTriggeredSwitch)
                     {
                         output = false;
                     }
@@ -203,7 +238,7 @@ namespace Micro
             {
                 Box box = config.boxes[boxIndex];
 
-                if (box.gridX == gridX && box.gridY == gridY)
+                if (box.config.gridX == gridX && box.config.gridY == gridY)
                 {
                     output = true;
 

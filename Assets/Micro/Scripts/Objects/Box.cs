@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
@@ -7,36 +8,37 @@ namespace Micro
 {
     public class Box : Movable
     {
-        public int gridX = 0;
-        public int gridY = 0;
-
-        public void Load(int pGridX, int pGridY, Vector2 pPos)
+        [Serializable]
+        public class Config
         {
-            gridX = pGridX;
-            gridY = pGridY;
+            public int index = -1;
 
-            Vector3 pos = transform.position;
-            pos.x = pPos.x;
-            pos.y = pPos.y;
-            transform.position = pos;
+            public float posX = 0;
+            public float posY = 0;
 
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, 0.25f)
-                .SetDelay(Random.Range(0, 0.15f));
+            public int gridX = 0;
+            public int gridY = 0;
+        }
+
+        public Config config = new Config();
+
+        public void Load(Vector2 pPos)
+        {
+            MovePosition(pPos.x, pPos.y);
+            MoveGrid((int)pPos.x, (int)pPos.y);
         }
 
         public override void MovePosition(float pX, float pY)
         {
-            Vector3 position = transform.position;
-            position.x += pX;
-            position.y += pY;
-            transform.position = position;
+            config.posX += pX;
+            config.posY += pY;
+            transform.position = new Vector3(config.posX, config.posY, 0);
         }
 
         public override void MoveGrid(int pX, int pY)
         {
-            gridX += pX;
-            gridY += pY;
+            config.gridX += pX;
+            config.gridY += pY;
         }
     }
 }

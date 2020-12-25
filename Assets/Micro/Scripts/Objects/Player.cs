@@ -1,43 +1,73 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
 
 namespace Micro
 {
-    public class Player : MonoBehaviour
+    public class Player : Movable
     {
-        public int gridX = 0;
-        public int gridY = 0;
+        [Serializable]
+        public class Config
+        {
+            public int index = -1;
+
+            public float posX = 0;
+            public float posY = 0;
+
+            public int gridX = 0;
+            public int gridY = 0;
+
+            public Config DeepCopy()
+            {
+                Config output = new Config();
+
+                output.index = index;
+                output.posX = posX;
+                output.posY = posY;
+                output.gridX = gridX;
+                output.gridY = gridY;
+
+                return output;
+            }
+        }
+
+        public Config config = new Config();
+
         public Movable target;
 
-        public void Load(int pGridX, int pGridY, Vector2 pPos)
+        public Player DeepCopy()
         {
-            gridX = pGridX;
-            gridY = pGridY;
+            Player output = new Player();
+            output.config.index = config.index;
+            output.config.posX = config.posX;
+            output.config.posY = config.posY;
+            output.config.gridX = config.gridX;
+            output.config.gridY = config.gridY;
 
-            Vector3 pos = transform.position;
-            pos.x = pPos.x;
-            pos.y = pPos.y;
-            transform.position = pos;
+            output.target = target;
 
-            transform.localScale = Vector3.zero;
-            transform.DOScale(Vector3.one, 0.25f)
-                .SetDelay(Random.Range(0, 0.15f));
+            return output;
         }
 
-        public void MovePosition(float pX, float pY)
+        public void Load(Vector2 pPos)
         {
-            Vector3 position = transform.position;
-            position.x += pX;
-            position.y += pY;
-            transform.position = position;
+            MovePosition(pPos.x, pPos.y);
+            MoveGrid((int)pPos.x, (int)pPos.y);
         }
 
-        public void MoveGrid(int pX, int pY)
+        public override void MovePosition(float pX, float pY)
         {
-            gridX += pX;
-            gridY += pY;
+            config.posX += pX;
+            config.posY += pY;
+            transform.position = new Vector3(config.posX, config.posY, 0);
+        }
+
+        public override void MoveGrid(int pX, int pY)
+        {
+            config.gridX += pX;
+            config.gridY += pY;
         }
     }
 }

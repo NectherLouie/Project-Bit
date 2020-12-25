@@ -1,11 +1,26 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 namespace Micro
 {
-    public class Gate : Wall
+    public class Gate : Movable
     {
+        [Serializable]
+        public class Config
+        {
+            public int index = -1;
+
+            public float posX = 0;
+            public float posY = 0;
+
+            public int gridX = 0;
+            public int gridY = 0;
+        }
+
+        public Config config = new Config();
+
         public enum Condition { AND, OR }
         public Condition condition;
 
@@ -13,18 +28,23 @@ namespace Micro
 
         private int switchCount = 0;
 
+        public void Load(Vector2 pPos)
+        {
+            MovePosition(pPos.x, pPos.y);
+            MoveGrid((int)pPos.x, (int)pPos.y);
+        }
+
         public override void MovePosition(float pX, float pY)
         {
-            Vector3 position = transform.position;
-            position.x += pX;
-            position.y += pY;
-            transform.position = position;
+            config.posX += pX;
+            config.posY += pY;
+            transform.position = new Vector3(config.posX, config.posY, 0);
         }
 
         public override void MoveGrid(int pX, int pY)
         {
-            gridX += pX;
-            gridY += pY;
+            config.gridX += pX;
+            config.gridY += pY;
         }
 
         public override void SwitchOn(Switch pSwitch)

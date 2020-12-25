@@ -23,6 +23,9 @@ namespace Micro
 
             [HideInInspector]
             public List<Switch> switches = new List<Switch>();
+
+            //[HideInInspector]
+            public List<Gate> gates = new List<Gate>();
         }
 
         public Config config = new Config();
@@ -34,15 +37,13 @@ namespace Micro
                 if (t.GetComponent<Player>() != null)
                 {
                     config.player = t.GetComponent<Player>();
-                    config.player.gridX = (int)t.position.x;
-                    config.player.gridY = (int)t.position.y;
+                    config.player.Load(t.position);
                 }
 
                 if (t.GetComponent<Box>() != null)
                 {
                     Box box = t.GetComponent<Box>();
-                    box.gridX = (int)t.position.x;
-                    box.gridY = (int)t.position.y;
+                    box.Load(t.position);
 
                     config.boxes.Add(box);
                 }
@@ -50,8 +51,7 @@ namespace Micro
                 if (t.GetComponent<Wall>() != null)
                 {
                     Wall wall = t.GetComponent<Wall>();
-                    wall.gridX = (int)t.position.x;
-                    wall.gridY = (int)t.position.y;
+                    wall.Load(t.position);
 
                     config.walls.Add(wall);
                 }
@@ -59,17 +59,15 @@ namespace Micro
                 if (t.GetComponent<Gate>() != null)
                 {
                     Gate gate = t.GetComponent<Gate>();
-                    gate.gridX = (int)t.position.x;
-                    gate.gridY = (int)t.position.y;
+                    gate.Load(t.position);
 
-                    config.walls.Add(gate);
+                    config.gates.Add(gate);
                 }
 
                 if (t.GetComponent<Switch>() != null)
                 {
                     Switch sw = t.GetComponent<Switch>();
-                    sw.gridX = (int)t.position.x;
-                    sw.gridY = (int)t.position.y;
+                    sw.Load(t.position);
 
                     config.switches.Add(sw);
                 }

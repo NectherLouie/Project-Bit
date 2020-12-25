@@ -10,6 +10,7 @@ namespace Micro
         private LevelSystem levelSystem;
         private MovementSystem movementSystem;
         private TriggerSystem triggerSystem;
+        private TimelineSystem timelineSystem;
 
         private void Awake()
         {
@@ -29,6 +30,9 @@ namespace Micro
 
             triggerSystem = FindObjectOfType<TriggerSystem>();
             triggerSystem.Init(levelSystem.config);
+
+            timelineSystem = FindObjectOfType<TimelineSystem>();
+            timelineSystem.Init(levelSystem.config);
         }
 
         private void OnMoveInput(int pVertical, int pHorizontal)
@@ -39,6 +43,7 @@ namespace Micro
         private void OnMoveComplete()
         {
             triggerSystem.TriggerEvents();
+            timelineSystem.RecordTimeStamp();
         }
     }
 }
