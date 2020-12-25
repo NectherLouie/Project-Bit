@@ -28,8 +28,10 @@ namespace Micro
 
         private int switchCount = 0;
 
-        public void Load(Vector2 pPos)
+        public void Load(int pIndex, Vector2 pPos)
         {
+            config.index = pIndex;
+
             MovePosition(pPos.x, pPos.y);
             MoveGrid((int)pPos.x, (int)pPos.y);
         }

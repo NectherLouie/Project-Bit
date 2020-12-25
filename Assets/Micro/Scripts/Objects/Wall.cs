@@ -21,8 +21,10 @@ namespace Micro
 
         public Config config = new Config();
 
-        public void Load(Vector2 pPos)
+        public void Load(int pIndex, Vector2 pPos)
         {
+            config.index = pIndex;
+
             MovePosition(pPos.x, pPos.y);
             MoveGrid((int)pPos.x, (int)pPos.y);
         }

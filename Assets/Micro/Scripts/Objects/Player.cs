@@ -19,7 +19,7 @@ namespace Micro
             public int gridX = 0;
             public int gridY = 0;
 
-            public Config DeepCopy()
+            public Config Clone()
             {
                 Config output = new Config();
 
@@ -37,22 +37,10 @@ namespace Micro
 
         public Movable target;
 
-        public Player DeepCopy()
+        public void Load(int pIndex, Vector2 pPos)
         {
-            Player output = new Player();
-            output.config.index = config.index;
-            output.config.posX = config.posX;
-            output.config.posY = config.posY;
-            output.config.gridX = config.gridX;
-            output.config.gridY = config.gridY;
+            config.index = pIndex;
 
-            output.target = target;
-
-            return output;
-        }
-
-        public void Load(Vector2 pPos)
-        {
             MovePosition(pPos.x, pPos.y);
             MoveGrid((int)pPos.x, (int)pPos.y);
         }

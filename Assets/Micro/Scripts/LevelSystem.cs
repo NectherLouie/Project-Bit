@@ -13,7 +13,7 @@ namespace Micro
             public Transform levelTransform;
 
             [HideInInspector]
-            public Player player;
+            public List<Player> players = new List<Player>();
 
             [HideInInspector]
             public List<Box> boxes = new List<Box>();
@@ -32,44 +32,62 @@ namespace Micro
 
         public void Init()
         {
+            int playerCount = 0;
+            int boxCount = 0;
+            int wallCount = 0;
+            int gateCount = 0;
+            int switchCount = 0;
+
             foreach (Transform t in config.levelTransform)
             {
                 if (t.GetComponent<Player>() != null)
                 {
-                    config.player = t.GetComponent<Player>();
-                    config.player.Load(t.position);
+                    Player player = t.GetComponent<Player>();
+                    player.Load(playerCount, t.position);
+
+                    config.players.Add(player);
+
+                    playerCount++;
                 }
 
                 if (t.GetComponent<Box>() != null)
                 {
                     Box box = t.GetComponent<Box>();
-                    box.Load(t.position);
+                    box.Load(boxCount, t.position);
 
                     config.boxes.Add(box);
+
+                    boxCount++;
                 }
 
                 if (t.GetComponent<Wall>() != null)
                 {
                     Wall wall = t.GetComponent<Wall>();
-                    wall.Load(t.position);
+                    wall.Load(wallCount, t.position);
 
                     config.walls.Add(wall);
+
+                    wallCount++;
                 }
 
                 if (t.GetComponent<Gate>() != null)
                 {
                     Gate gate = t.GetComponent<Gate>();
-                    gate.Load(t.position);
+                    gate.Load(gateCount, t.position);
 
                     config.gates.Add(gate);
+
+                    gateCount++;
                 }
 
                 if (t.GetComponent<Switch>() != null)
                 {
                     Switch sw = t.GetComponent<Switch>();
-                    sw.Load(t.position);
+                    sw.Load(switchCount, t.position);
 
                     config.switches.Add(sw);
+
+                    switchCount++;
                 }
             }
         }

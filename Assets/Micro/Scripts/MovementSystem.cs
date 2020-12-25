@@ -16,14 +16,14 @@ namespace Micro
             public int horizontal = 0;
             public int vertical = 0;
 
-            public Player player;
+            public List<Player> players = new List<Player>();
             public List<Box> boxes = new List<Box>();
             public List<Wall> walls = new List<Wall>();
             public List<Gate> gates = new List<Gate>();
 
             public void ResetGameObjects()
             {
-                player = null;
+                players.Clear();
                 boxes.Clear();
                 walls.Clear();
                 gates.Clear();
@@ -37,25 +37,14 @@ namespace Micro
             }
         }
 
-        public class MoveConfig
-        {
-            public Vector2 playerMove;
-            public Vector2 playerGrid;
-
-            public Vector2 playerTargetMove;
-            public Vector2 playerTargetGrid;
-        }
-
         public Config config = new Config();
-
-        private MoveConfig moveConfig = new MoveConfig();
 
         public void Init(LevelSystem.Config pConfig)
         {
             config.ResetGameObjects();
             config.ResetPlayData();
 
-            config.player = pConfig.player;
+            config.players = pConfig.players;
             config.boxes = pConfig.boxes;
             config.walls = pConfig.walls;
             config.gates = pConfig.gates;
@@ -66,123 +55,159 @@ namespace Micro
             config.vertical = pVertical;
             config.horizontal = pHorizontal;
 
-            bool playerCanMove = true;
+            List<bool> playerCanMove = ResetPlayerCanMoveList();
 
             if (config.vertical != 0)
             {
-                playerCanMove = TryMoveVertical();
+                TryMoveVertical(ref playerCanMove);
             }
 
             if (config.horizontal != 0)
             {
-                playerCanMove = TryMoveHorizontal();
+                TryMoveHorizontal(ref playerCanMove);
             }
 
-            if (playerCanMove)
+            if (playerCanMove.Contains(true))
             {
-                UpdateMovements();
+                UpdateMovements(ref playerCanMove);
             }
         }
 
-        private bool TryMoveVertical()
+        private List<bool> ResetPlayerCanMoveList()
         {
-            int playerMoveX = config.player.config.gridX;
-            int playerMoveY = config.player.config.gridY + config.vertical;
+            List<bool> output = new List<bool>();
 
-            // Check impassables
-            bool isPlayerCollidingWalls = IsCollidingWalls(playerMoveX, playerMoveY);
-            bool isPlayerCollidingGates = IsCollidingGates(playerMoveX, playerMoveY);
-            bool canMove = !isPlayerCollidingWalls && !isPlayerCollidingGates;
-
-            // Check movables
-            for (int boxIndex = 0; boxIndex < config.boxes.Count; ++boxIndex)
+            for (int i = 0; i < config.players.Count; ++i)
             {
-                Box box = config.boxes[boxIndex];
+                output.Add(true);
+            }
 
-                if (box.config.gridX == playerMoveX && box.config.gridY == playerMoveY)
+            return output;
+        }
+
+        private void TryMoveVertical(ref List<bool> pPlayerCanMoveList)
+        {
+            // Check for each players
+            for (int playerIndex = 0; playerIndex  < config.players.Count; ++playerIndex)
+            {
+                Player player = config.players[playerIndex];
+
+                int playerMoveX = player.config.gridX;
+                int playerMoveY = player.config.gridY + config.vertical;
+                
+                // Check impassables
+                bool isPlayerCollidingWalls = IsCollidingWalls(playerMoveX, playerMoveY);
+                bool isPlayerCollidingGates = IsCollidingGates(playerMoveX, playerMoveY);
+                bool canMove = !isPlayerCollidingWalls && !isPlayerCollidingGates;
+
+                // Check movables
+                for (int boxIndex = 0; boxIndex < config.boxes.Count; ++boxIndex)
                 {
-                    int boxMoveX = box.config.gridX;
-                    int boxMoveY = box.config.gridY + config.vertical;
+                    Box box = config.boxes[boxIndex];
 
-                    bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
-                    bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
-                    bool isBoxCollidingGates = IsCollidingGates(boxMoveX, boxMoveY);
-
-                    canMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingGates;
-
-                    if (canMove)
+                    if (box.config.gridX == playerMoveX && box.config.gridY == playerMoveY)
                     {
-                        config.player.target = box;
+                        int boxMoveX = box.config.gridX;
+                        int boxMoveY = box.config.gridY + config.vertical;
+
+                        bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
+                        bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
+                        bool isBoxCollidingGates = IsCollidingGates(boxMoveX, boxMoveY);
+
+                        canMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingGates;
+
+                        if (canMove)
+                        {
+                            player.target = box;
+                        }
                     }
                 }
-            }
 
-            return canMove;
+                config.players[playerIndex] = player;
+
+                pPlayerCanMoveList[playerIndex] = canMove;
+            }
         }
 
-        private bool TryMoveHorizontal()
+        private void TryMoveHorizontal(ref List<bool> pPlayerCanMoveList)
         {
-            int playerMoveX = config.player.config.gridX + config.horizontal;
-            int playerMoveY = config.player.config.gridY;
-
-            // check impassables
-            bool isPlayerCollidingWalls = IsCollidingWalls(playerMoveX, playerMoveY);
-            bool isPlayerCollidingGates = IsCollidingGates(playerMoveX, playerMoveY);
-            bool canMove = !isPlayerCollidingWalls && !isPlayerCollidingGates;
-
-            // Check movables
-            for (int boxIndex = 0; boxIndex < config.boxes.Count; ++boxIndex)
+            for (int playerIndex = 0; playerIndex < config.players.Count; ++playerIndex)
             {
-                Box box = config.boxes[boxIndex];
+                Player player = config.players[playerIndex];
 
-                if (box.config.gridX == playerMoveX && box.config.gridY == playerMoveY)
+                int playerMoveX = player.config.gridX + config.horizontal;
+                int playerMoveY = player.config.gridY;
+
+                // check impassables
+                bool isPlayerCollidingWalls = IsCollidingWalls(playerMoveX, playerMoveY);
+                bool isPlayerCollidingGates = IsCollidingGates(playerMoveX, playerMoveY);
+                bool canMove = !isPlayerCollidingWalls && !isPlayerCollidingGates;
+
+                // Check movables
+                for (int boxIndex = 0; boxIndex < config.boxes.Count; ++boxIndex)
                 {
-                    int boxMoveX = box.config.gridX + config.horizontal;
-                    int boxMoveY = box.config.gridY;
+                    Box box = config.boxes[boxIndex];
 
-                    bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
-                    bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
-                    bool isBoxCollidingGates = IsCollidingGates(boxMoveX, boxMoveY);
-
-                    canMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingGates;
-
-                    if (canMove)
+                    if (box.config.gridX == playerMoveX && box.config.gridY == playerMoveY)
                     {
-                        config.player.target = box;
+                        int boxMoveX = box.config.gridX + config.horizontal;
+                        int boxMoveY = box.config.gridY;
+
+                        bool isBoxCollidingWall = IsCollidingWalls(boxMoveX, boxMoveY);
+                        bool isBoxCollidingBox = IsCollidingBoxes(boxMoveX, boxMoveY);
+                        bool isBoxCollidingGates = IsCollidingGates(boxMoveX, boxMoveY);
+
+                        canMove = !isBoxCollidingWall && !isBoxCollidingBox && !isBoxCollidingGates;
+
+                        if (canMove)
+                        {
+                            player.target = box;
+                        }
                     }
                 }
-            }
 
-            return canMove;
+                config.players[playerIndex] = player;
+
+                pPlayerCanMoveList[playerIndex] = canMove;
+            }
         }
 
-        public void UpdateMovements()
+        public void UpdateMovements(ref List<bool> pPlayerCanMoveList)
         {
-            moveConfig.playerMove.x = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
-            moveConfig.playerMove.y = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
+            for (int playerIndex = 0; playerIndex < config.players.Count; ++playerIndex)
+            {
+                Player player = config.players[playerIndex];
+                bool canMove = pPlayerCanMoveList[playerIndex];
+
+                if (canMove)
+                {
+                    float playerMoveX = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
+                    float playerMoveY = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
             
-            config.player.MovePosition(moveConfig.playerMove.x, moveConfig.playerMove.y);
+                    player.MovePosition(playerMoveX, playerMoveY);
 
-            moveConfig.playerGrid.x = config.horizontal != 0 ? config.horizontal : 0;
-            moveConfig.playerGrid.y = config.vertical != 0 ? config.vertical : 0;
+                    int playerGridX = config.horizontal != 0 ? config.horizontal : 0;
+                    int playerGridY = config.vertical != 0 ? config.vertical : 0;
 
-            config.player.MoveGrid((int)moveConfig.playerGrid.x, (int)moveConfig.playerGrid.y);
+                    player.MoveGrid(playerGridX, playerGridY);
 
-            if (config.player.target != null)
-            {
-                Movable playerTarget = config.player.target;
+                    if (player.target != null)
+                    {
+                        Movable playerTarget = player.target;
 
-                moveConfig.playerTargetMove.x = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
-                moveConfig.playerTargetMove.y = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
+                        float targetMoveX = config.horizontal != 0 ? config.horizontal * config.cellSize.x : 0;
+                        float targetMoveY = config.vertical != 0 ? config.vertical * config.cellSize.y : 0;
 
-                playerTarget.MovePosition(moveConfig.playerTargetMove.x, moveConfig.playerTargetMove.y);
+                        playerTarget.MovePosition(targetMoveX, targetMoveY);
 
-                moveConfig.playerTargetGrid.x = config.horizontal != 0 ? config.horizontal : 0;
-                moveConfig.playerTargetGrid.y = config.vertical != 0 ? config.vertical : 0;
+                        int targetGridX = config.horizontal != 0 ? config.horizontal : 0;
+                        int targetGridY = config.vertical != 0 ? config.vertical : 0;
 
-                playerTarget.MoveGrid((int)moveConfig.playerTargetGrid.x, (int)moveConfig.playerTargetGrid.y);
+                        playerTarget.MoveGrid(targetGridX, targetGridY);
 
-                config.player.target = null;
+                        player.target = null;
+                    }
+                }
             }
 
             config.vertical = 0;

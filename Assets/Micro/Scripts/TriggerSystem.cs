@@ -10,14 +10,14 @@ namespace Micro
         [Serializable]
         public class Config
         {
-            public Player player;
+            public List<Player> players;
             public List<Box> boxes = new List<Box>();
             
             public List<Switch> switches = new List<Switch>();
 
             public void ResetGameObjects()
             {
-                player = null;
+                players.Clear();
                 boxes.Clear();
                 switches.Clear();
             }
@@ -29,7 +29,7 @@ namespace Micro
         {
             config.ResetGameObjects();
 
-            config.player = pConfig.player;
+            config.players = pConfig.players;
             config.boxes = pConfig.boxes;
             config.switches = pConfig.switches;
         }
@@ -43,17 +43,20 @@ namespace Micro
 
             foreach (Switch sw in config.switches)
             {
+                foreach (Player p in config.players)
+                {
+                    if (sw.config.gridX == p.config.gridX && sw.config.gridY == p.config.gridY)
+                    {
+                        sw.ToggleSwitchOn();
+                    }
+                }
+
                 foreach (Box b in config.boxes)
                 {
                     if (sw.config.gridX == b.config.gridX && sw.config.gridY == b.config.gridY)
                     {
                         sw.ToggleSwitchOn();
                     }
-                }
-
-                if(sw.config.gridX == config.player.config.gridX && sw.config.gridY == config.player.config.gridY)
-                {
-                    sw.ToggleSwitchOn();
                 }
             }
         }

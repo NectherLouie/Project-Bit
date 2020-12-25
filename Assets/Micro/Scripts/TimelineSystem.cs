@@ -10,17 +10,19 @@ namespace Micro
         [Serializable]
         public class TimeStampData
         {
-            public Player.Config player;
+            public List<Player.Config> players = new List<Player.Config>();
             public List<Box> boxes = new List<Box>();
             public List<Wall> walls = new List<Wall>();
             public List<Gate> gates = new List<Gate>();
             public List<Switch> switches = new List<Switch>();
+
+            public RenderTexture renderTexture = new RenderTexture(1920, 1080, 16);
         }
 
         [Serializable]
         public class Config
         {
-            public Player player;
+            public List<Player> players;
             public List<Box> boxes = new List<Box>();
             public List<Wall> walls = new List<Wall>();
             public List<Gate> gates = new List<Gate>();
@@ -30,7 +32,7 @@ namespace Micro
 
             public void ResetGameObjects()
             {
-                player = null;
+                players.Clear();
                 boxes.Clear();
                 walls.Clear();
                 gates.Clear();
@@ -46,7 +48,7 @@ namespace Micro
         {
             config.ResetGameObjects();
 
-            config.player = pConfig.player;
+            config.players = pConfig.players;
             config.boxes = pConfig.boxes;
             config.walls = pConfig.walls;
             config.gates = pConfig.gates;
@@ -56,7 +58,7 @@ namespace Micro
         public void RecordTimeStamp()
         {
             TimeStampData timeStampData = new TimeStampData();
-            timeStampData.player = config.player.config.DeepCopy();
+            timeStampData.players = ClonePlayerConfigs(ExtractPlayerConfigList(config.players));
             timeStampData.boxes = config.boxes;
             timeStampData.walls = config.walls;
             timeStampData.gates = config.gates;
@@ -66,10 +68,34 @@ namespace Micro
 
             foreach(TimeStampData tsd in config.timeStampData)
             {
-                Debug.Log(tsd.player.posX);
+                Debug.Log(tsd.players[0].posX);
             }
             
             Debug.Log("\n");
+        }
+
+        private List<Player.Config> ExtractPlayerConfigList(List<Player> pList)
+        {
+            List<Player.Config> output = new List<Player.Config>();
+
+            foreach(Player player in pList)
+            {
+                output.Add(player.config);
+            }
+
+            return output;
+        }
+
+        private List<Player.Config> ClonePlayerConfigs(List<Player.Config> pList)
+        {
+            List<Player.Config> output = new List<Player.Config>();
+
+            foreach (Player.Config p in pList)
+            {
+                output.Add(p.Clone());
+            }
+
+            return output;
         }
     }
 }

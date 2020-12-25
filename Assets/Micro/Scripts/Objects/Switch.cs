@@ -23,8 +23,10 @@ namespace Micro
 
         public List<Movable> pairedGates = new List<Movable>();
 
-        public void Load(Vector2 pPos)
+        public void Load(int pIndex, Vector2 pPos)
         {
+            config.index = pIndex;
+
             MovePosition(pPos.x, pPos.y);
             MoveGrid((int)pPos.x, (int)pPos.y);
         }
