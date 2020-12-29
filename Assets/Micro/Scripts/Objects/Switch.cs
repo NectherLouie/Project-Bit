@@ -9,19 +9,6 @@ namespace Micro
     {
         public List<Movable> pairedGates = new List<Movable>();
 
-        public override void MovePosition(float pX, float pY)
-        {
-            config.posX += pX;
-            config.posY += pY;
-            transform.position = new Vector3(config.posX, config.posY, 0);
-        }
-
-        public override void MoveGrid(int pX, int pY)
-        {
-            config.gridX += pX;
-            config.gridY += pY;
-        }
-
         public void ToggleSwitchOn()
         {
             foreach(Gate gate in pairedGates)

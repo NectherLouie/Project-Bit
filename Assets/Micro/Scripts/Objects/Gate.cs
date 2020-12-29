@@ -14,19 +14,6 @@ namespace Micro
 
         private int switchCount = 0;
 
-        public override void MovePosition(float pX, float pY)
-        {
-            config.posX += pX;
-            config.posY += pY;
-            transform.position = new Vector3(config.posX, config.posY, 0);
-        }
-
-        public override void MoveGrid(int pX, int pY)
-        {
-            config.gridX += pX;
-            config.gridY += pY;
-        }
-
         public override void SwitchOn(Switch pSwitch)
         {
             // Check if switch and gate is paired
