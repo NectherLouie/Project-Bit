@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace Micro
 {
@@ -19,6 +20,8 @@ namespace Micro
             inputSystem.OnMoveDown += OnMoveInput;
             inputSystem.OnMoveRight += OnMoveInput;
             inputSystem.OnMoveLeft += OnMoveInput;
+            inputSystem.OnResetKeyDown += OnResetKeyDown;
+            inputSystem.OnTimelineOpened += OnTimelineOpened;
             inputSystem.Init();
 
             levelSystem = FindObjectOfType<LevelSystem>();
@@ -29,21 +32,49 @@ namespace Micro
             movementSystem.Init(levelSystem.config);
 
             triggerSystem = FindObjectOfType<TriggerSystem>();
+            triggerSystem.OnExitActivated += OnExitActivated;
+            triggerSystem.OnSwitchToggled += OnSwitchToggled;
             triggerSystem.Init(levelSystem.config);
 
             timelineSystem = FindObjectOfType<TimelineSystem>();
+            timelineSystem.OnTimeStampClicked += OnTimeStampClicked;
             timelineSystem.Init(levelSystem.config);
         }
 
         private void OnMoveInput(int pVertical, int pHorizontal)
         {
+            timelineSystem.RecordTimeStamp();
             movementSystem.Move(pVertical, pHorizontal);
+        }
+
+        private void OnResetKeyDown()
+        {
+            SceneManager.LoadScene(0);
         }
 
         private void OnMoveComplete()
         {
             triggerSystem.TriggerEvents();
-            timelineSystem.RecordTimeStamp();
+        }
+
+        private void OnTimelineOpened()
+        {
+            timelineSystem.Open();
+        }
+
+        private void OnTimeStampClicked(TimelineSystem.TimeStampData pTimeStampData)
+        {
+            levelSystem.LoadTimeStamp(pTimeStampData);
+        }
+
+        private void OnExitActivated(Exit pExit)
+        {
+            pExit.ToggleSwitchOn();
+        }
+
+        private void OnSwitchToggled(Switch pSwitch)
+        {
+            pSwitch.ToggleSwitchOn();
         }
     }
 }

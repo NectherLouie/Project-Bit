@@ -11,6 +11,8 @@ namespace Micro
         public Action<int, int> OnMoveDown;
         public Action<int, int> OnMoveRight;
         public Action<int, int> OnMoveLeft;
+        public Action OnResetKeyDown;
+        public Action OnTimelineOpened;
 
         public void Init()
         {
@@ -34,6 +36,16 @@ namespace Micro
             else if (Input.GetKeyDown(KeyCode.A) || Input.GetKeyDown(KeyCode.LeftArrow))
             {
                 OnMoveLeft?.Invoke(0, -1);
+            }
+
+            if (Input.GetKeyDown(KeyCode.R))
+            {
+                OnResetKeyDown?.Invoke();
+            }
+
+            if (Input.GetKeyDown(KeyCode.T))
+            {
+                OnTimelineOpened?.Invoke();
             }
         }
     }

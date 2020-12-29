@@ -5,7 +5,7 @@ using UnityEngine;
 
 namespace Micro
 {
-    public class Wall : Movable
+    public class Exit : Movable
     {
         public override void MovePosition(float pX, float pY)
         {
@@ -18,6 +18,16 @@ namespace Micro
         {
             config.gridX += pX;
             config.gridY += pY;
+        }
+
+        public void ToggleSwitchOn()
+        {
+
+        }
+
+        public void ToggleSwitchOff()
+        {
+
         }
     }
 }
