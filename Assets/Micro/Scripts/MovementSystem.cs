@@ -7,6 +7,7 @@ namespace Micro
 {
     public class MovementSystem : MonoBehaviour
     {
+        public Action OnMoveSucceeded;
         public Action OnMoveComplete;
 
         [Serializable]
@@ -69,6 +70,7 @@ namespace Micro
 
             if (playerCanMove.Contains(true))
             {
+                OnMoveSucceeded?.Invoke();
                 UpdateMovements(ref playerCanMove);
             }
         }
