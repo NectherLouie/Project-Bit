@@ -33,12 +33,19 @@ namespace Micro
 
         public Config config = new Config();
 
-        public void Init()
-        {
-            // Instantiate level prefab using level data
-            // Set levelTransform to the instansiated prefab
-            // Populate level
+        private PlayData playData;
 
+        public void Init(PlayData pPlayData)
+        {
+            playData = pPlayData;
+
+            // Instantiate level prefab using level data
+            GameObject levelObject = Instantiate(playData.levelPrefabs[playData.levelIndex]);
+            
+            // Set levelTransform to the instansiated prefab
+            config.levelTransform = levelObject.transform;
+
+            // Populate level
             int playerCount = 0;
             int boxCount = 0;
             int wallCount = 0;

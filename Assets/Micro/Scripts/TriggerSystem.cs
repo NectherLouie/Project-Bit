@@ -41,7 +41,7 @@ namespace Micro
 
         public void TriggerEvents()
         {
-            // Goals
+            // Exits
             foreach (Exit exit in config.exits)
             {
                 exit.ToggleSwitchOff();

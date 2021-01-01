@@ -402,7 +402,7 @@ MonoBehaviour:
   m_fontSizeMax: 72
   m_fontStyle: 8
   m_textAlignment: 4098
-  m_characterSpacing: -4
+  m_characterSpacing: -8
   m_wordSpacing: 0
   m_lineSpacing: 0
   m_lineSpacingMax: 0
@@ -509,6 +509,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b865c02286f4a914fa8248719de2afbe, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: f4f55d05a09dc8447babed8dd6e1feb7, type: 2}
 --- !u!1 &580694564
 GameObject:
   m_ObjectHideFlags: 0
@@ -1012,6 +1013,11 @@ PrefabInstance:
         type: 3}
       propertyPath: m_Name
       value: FadePanel
+      objectReference: {fileID: 0}
+    - target: {fileID: 6886963980904140948, guid: a19b069997eb08c438116469302b8aaf,
+        type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6886963980904140949, guid: a19b069997eb08c438116469302b8aaf,
         type: 3}

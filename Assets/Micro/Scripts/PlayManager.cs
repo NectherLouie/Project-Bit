@@ -7,6 +7,8 @@ namespace Micro
 {
     public class PlayManager : MonoBehaviour
     {
+        public GameData gameData;
+
         private TransitionSystem transitionSystem;
         private InputSystem inputSystem;
         private LevelSystem levelSystem;
@@ -16,6 +18,9 @@ namespace Micro
 
         private void Awake()
         {
+            levelSystem = FindObjectOfType<LevelSystem>();
+            levelSystem.Init(gameData.GetCurrentPlayData());
+
             transitionSystem = FindObjectOfType<TransitionSystem>();
             transitionSystem.OnFadeComplete += OnTransitionEnterComplete;
             transitionSystem.Init();
@@ -24,6 +29,8 @@ namespace Micro
 
         private void OnTransitionEnterComplete()
         {
+            transitionSystem.OnFadeComplete -= OnTransitionEnterComplete;
+
             inputSystem = FindObjectOfType<InputSystem>();
             inputSystem.OnMoveUp += OnMoveInput;
             inputSystem.OnMoveDown += OnMoveInput;
@@ -32,9 +39,6 @@ namespace Micro
             inputSystem.OnResetKeyDown += OnResetKeyDown;
             inputSystem.OnTimelineOpened += OnTimelineOpened;
             inputSystem.Init();
-
-            levelSystem = FindObjectOfType<LevelSystem>();
-            levelSystem.Init();
 
             movementSystem = FindObjectOfType<MovementSystem>();
             movementSystem.OnMoveSucceeded += OnMoveSucceeded;
@@ -84,6 +88,8 @@ namespace Micro
 
         private void OnExitActivated(Exit pExit)
         {
+            Debug.Log("OnExitActivated()");
+
             pExit.ToggleSwitchOn();
         }
 

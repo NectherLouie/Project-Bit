@@ -29,6 +29,7 @@ namespace Micro
 
         private void OnFadeInComplete()
         {
+            fadePanelController.OnFadeComplete -= OnFadeInComplete;
             OnTitleClicked?.Invoke();
         }
 
