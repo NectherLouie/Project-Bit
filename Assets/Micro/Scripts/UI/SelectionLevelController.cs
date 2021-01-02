@@ -28,19 +28,24 @@ namespace Micro
         public void CompleteLevelArea()
         {
             gradientBar.gameObject.SetActive(true);
+            lockIcon.gameObject.SetActive(false);
+
             completed = true;
         }
 
         public void UnlockLevelArea()
         {
             gradientBar.gameObject.SetActive(false);
+
+            lockIcon.gameObject.SetActive(true);
             lockIcon.sprite = unlockSprite;
             lockIcon.color = unlockColor;
         }
 
         public void UpdateLevelIndex(int pLevelIndex, int pLevelCount)
         {
-            levelNumbersText.text = pLevelIndex.ToString() + "/" + pLevelCount.ToString();
+            int currentLevel = pLevelIndex + 1;
+            levelNumbersText.text = currentLevel.ToString() + "/" + pLevelCount.ToString();
         }
 
         public void EnableInput(bool pEnabled)
@@ -54,8 +59,6 @@ namespace Micro
             {
                 Debug.Log(name + " Game Object Clicked!");
 
-                DOTween.KillAll();
-
                 OnClicked?.Invoke(levelType);
             }
         }
@@ -64,8 +67,6 @@ namespace Micro
         {
             if (!completed)
             {
-                Debug.Log("Cursor Entering " + name + " GameObject");
-
                 transform.DOScale(1.25f, 0.5f)
                     .SetEase(Ease.OutBack);
             }
@@ -75,8 +76,6 @@ namespace Micro
         {
             if (!completed)
             {
-                Debug.Log("Cursor Exiting " + name + " GameObject");
-
                 transform.DOScale(1.0f, 0.5f)
                     .SetEase(Ease.OutBack);
             }

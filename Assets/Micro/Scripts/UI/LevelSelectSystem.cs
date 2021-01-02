@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using DG.Tweening;
 
 namespace Micro
 {
@@ -26,24 +27,41 @@ namespace Micro
         {
             gameData = pGameData;
 
-            learnerLevelController.OnClicked += OnLearnerLevelClicked;
+            // ---
+            PlayData levelLearnerData = gameData.playDataList[0];
+            learnerLevelController.OnClicked += OnSelectionLevelClicked;
             learnerLevelController.EnableInput(false);
-            learnerLevelController.UpdateLevelIndex(pGameData.levelLearnerData.levelIndex, pGameData.levelLearnerData.levelCount);
             
-            if (pGameData.levelLearnerData.unlocked)
+            if (levelLearnerData.config.unlocked)
             {
+                learnerLevelController.UpdateLevelIndex(levelLearnerData.config.levelIndex, levelLearnerData.config.levelCount);
                 learnerLevelController.UnlockLevelArea();
                 learnerLevelController.EnableInput(true);
 
-                if (pGameData.levelLearnerData.completed)
+                if (levelLearnerData.config.completed)
                 {
                     learnerLevelController.CompleteLevelArea();
                     learnerLevelController.EnableInput(false);
                 }
             }
 
-            movementLevelController.OnClicked += OnMovementLevelClicked;
+            // ---
+            PlayData levelMovementData = gameData.playDataList[1];
+            movementLevelController.OnClicked += OnSelectionLevelClicked;
             movementLevelController.EnableInput(false);
+            
+            if (levelMovementData.config.unlocked)
+            {
+                movementLevelController.UpdateLevelIndex(levelMovementData.config.levelIndex, levelMovementData.config.levelCount);
+                movementLevelController.UnlockLevelArea();
+                movementLevelController.EnableInput(true);
+
+                if (levelMovementData.config.completed)
+                {
+                    movementLevelController.CompleteLevelArea();
+                    movementLevelController.EnableInput(false);
+                }
+            }
 
             focusLevelController.OnClicked += OnFocusLevelClicked;
             focusLevelController.EnableInput(false);
@@ -63,25 +81,21 @@ namespace Micro
             fadePanelController.OnFadeComplete -= OnFadeOutComplete;
         }
 
-        private void OnLearnerLevelClicked(PlayData.LevelType pLevelType)
+        private void OnSelectionLevelClicked(PlayData.LevelType pLevelType)
         {
-            levelType = pLevelType;
-
-            fadePanelController.OnFadeComplete += OnLearnerFadeInComplete;
+            fadePanelController.OnFadeComplete += OnFadeInComplete;
             fadePanelController.FadeIn();
         }
 
-        private void OnLearnerFadeInComplete()
+        private void OnFadeInComplete()
         {
             CleanupListeners();
 
-            fadePanelController.OnFadeComplete -= OnLearnerFadeInComplete;
+            fadePanelController.OnFadeComplete -= OnFadeInComplete;
+
+            DOTween.KillAll();
+
             OnLevelSelectClicked?.Invoke(levelType);
-        }
-
-        private void OnMovementLevelClicked(PlayData.LevelType pLevelType)
-        {
-
         }
 
         private void OnFocusLevelClicked(PlayData.LevelType pLevelType)
@@ -101,8 +115,8 @@ namespace Micro
 
         private void CleanupListeners()
         {
-            learnerLevelController.OnClicked -= OnLearnerLevelClicked;
-            movementLevelController.OnClicked -= OnMovementLevelClicked;
+            learnerLevelController.OnClicked -= OnSelectionLevelClicked;
+            movementLevelController.OnClicked -= OnSelectionLevelClicked;
             focusLevelController.OnClicked -= OnFocusLevelClicked;
             awarenessLevelController.OnClicked -= OnAwarenessLevelClicked;
             masteryLevelController.OnClicked -= OnMasteryLevelClicked;

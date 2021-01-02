@@ -20,8 +20,6 @@ namespace Micro
 
         private void OnLevelSelectClicked(PlayData.LevelType pLevelType)
         {
-            gameData.currentLevelType = pLevelType;
-
             SceneManager.LoadScene((int)SceneIndices.PLAY);
         }
     }

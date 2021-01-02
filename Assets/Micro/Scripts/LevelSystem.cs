@@ -40,7 +40,7 @@ namespace Micro
             playData = pPlayData;
 
             // Instantiate level prefab using level data
-            GameObject levelObject = Instantiate(playData.levelPrefabs[playData.levelIndex]);
+            GameObject levelObject = Instantiate(playData.levelPrefabs[playData.config.levelIndex]);
             
             // Set levelTransform to the instansiated prefab
             config.levelTransform = levelObject.transform;

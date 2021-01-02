@@ -8,6 +8,7 @@ namespace Micro
     public class PlayManager : MonoBehaviour
     {
         public GameData gameData;
+        public PlayData playData;
 
         private TransitionSystem transitionSystem;
         private InputSystem inputSystem;
@@ -16,10 +17,17 @@ namespace Micro
         private TriggerSystem triggerSystem;
         private TimelineSystem timelineSystem;
 
+        private HUDController hudController;
+
         private void Awake()
         {
+            playData = gameData.GetCurrentPlayData();
+
             levelSystem = FindObjectOfType<LevelSystem>();
-            levelSystem.Init(gameData.GetCurrentPlayData());
+            levelSystem.Init(playData);
+
+            hudController = FindObjectOfType<HUDController>();
+            hudController.Init(playData);
 
             transitionSystem = FindObjectOfType<TransitionSystem>();
             transitionSystem.OnFadeComplete += OnTransitionEnterComplete;
@@ -63,11 +71,15 @@ namespace Micro
         private void OnMoveSucceeded()
         {
             timelineSystem.RecordTimeStamp();
+
+            gameData.DecreaseMoves();
+
+            hudController.UpdateMoves();
         }
 
         private void OnResetKeyDown()
         {
-            SceneManager.LoadScene(1);
+            SceneManager.LoadScene((int)SceneIndices.MAIN_MENU);
         }
 
         private void OnMoveComplete()
@@ -91,6 +103,25 @@ namespace Micro
             Debug.Log("OnExitActivated()");
 
             pExit.ToggleSwitchOn();
+
+            transitionSystem.OnFadeComplete += OnExitTransitionComplete;
+            transitionSystem.PlayExitTransition();
+        }
+
+        private void OnExitTransitionComplete()
+        {
+            transitionSystem.OnFadeComplete -= OnExitTransitionComplete;
+
+            gameData.CompleteLevel();
+
+            if (!playData.config.completed)
+            {
+                SceneManager.LoadScene((int)SceneIndices.PLAY);
+            }
+            else
+            {
+                SceneManager.LoadScene((int)SceneIndices.LEVEL_SELECT);
+            }
         }
 
         private void OnSwitchToggled(Switch pSwitch)

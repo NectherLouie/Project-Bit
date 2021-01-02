@@ -24,6 +24,7 @@ namespace Micro
 
         private void OnFadeOutComplete()
         {
+            fadePanelController.OnFadeComplete -= OnFadeOutComplete;
             OnFadeComplete?.Invoke();
         }
 
@@ -35,6 +36,7 @@ namespace Micro
 
         public void OnFadeInComplete()
         {
+            fadePanelController.OnFadeComplete -= OnFadeInComplete;
             OnFadeComplete?.Invoke();
         }
     }
