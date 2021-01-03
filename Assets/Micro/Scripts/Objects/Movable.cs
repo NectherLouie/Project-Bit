@@ -61,10 +61,10 @@ namespace Micro
         {
             config.posX += pX;
             config.posY += pY;
-            transform.localPosition = new Vector3(config.posX, config.posY, 0);
+            //transform.localPosition = new Vector3(config.posX, config.posY, 0);
 
-            //transform.DOLocalMove(new Vector3(config.posX, config.posY, 0), 0.25f)
-            //    .OnComplete(OnMoveComplete);
+            transform.DOLocalMove(new Vector3(config.posX, config.posY, 0), 0.15f)
+                .OnComplete(OnMoveComplete);
         }
 
         private void OnMoveComplete()

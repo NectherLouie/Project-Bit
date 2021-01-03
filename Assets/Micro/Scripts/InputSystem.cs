@@ -14,13 +14,25 @@ namespace Micro
         public Action OnResetKeyDown;
         public Action OnTimelineOpened;
 
+        private bool inputEnabled = false;
+
         public void Init()
         {
-            //
+            EnableInput(true);
+        }
+
+        public void EnableInput(bool pEnabled)
+        {
+            inputEnabled = pEnabled;
         }
 
         private void Update()
         {
+            if (!inputEnabled)
+            {
+                return;
+            }
+
             if (Input.GetKeyDown(KeyCode.W) || Input.GetKeyDown(KeyCode.UpArrow))
             {
                 OnMoveUp.Invoke(1, 0);

@@ -70,7 +70,9 @@ namespace Micro
 
         private void OnMoveSucceeded()
         {
-            timelineSystem.RecordTimeStamp();
+            inputSystem.EnableInput(false);
+
+            //timelineSystem.RecordTimeStamp();
 
             gameData.DecreaseMoves();
 
@@ -85,6 +87,13 @@ namespace Micro
         private void OnMoveComplete()
         {
             triggerSystem.TriggerEvents();
+
+            StartCoroutine(Bit.Utils.Wait(0.155f, OnWaitMoveComplete));
+        }
+
+        private void OnWaitMoveComplete()
+        {
+            inputSystem.EnableInput(true);
         }
 
         private void OnTimelineOpened()
@@ -103,6 +112,15 @@ namespace Micro
             Debug.Log("OnExitActivated()");
 
             pExit.ToggleSwitchOn();
+
+            inputSystem.OnMoveUp -= OnMoveInput;
+            inputSystem.OnMoveDown -= OnMoveInput;
+            inputSystem.OnMoveRight -= OnMoveInput;
+            inputSystem.OnMoveLeft -= OnMoveInput;
+            inputSystem.OnResetKeyDown -= OnResetKeyDown;
+            inputSystem.OnTimelineOpened -= OnTimelineOpened;
+            inputSystem.EnableInput(false);
+            StopAllCoroutines();
 
             transitionSystem.OnFadeComplete += OnExitTransitionComplete;
             transitionSystem.PlayExitTransition();
