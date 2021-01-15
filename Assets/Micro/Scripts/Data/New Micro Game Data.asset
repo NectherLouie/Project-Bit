@@ -14,8 +14,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelLearnerData:
     levelPrefabs:
-    - {fileID: 4569223526920660701, guid: 6aa8d277d93de91449a5d214dfc34128, type: 3}
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
+    - {fileID: 4569223526920660701, guid: e4b64a099b96fae49adf89f71b0e4730, type: 3}
+    - {fileID: 4569223526920660701, guid: e4b64a099b96fae49adf89f71b0e4730, type: 3}
     - {fileID: 4569223526920660701, guid: ec4588c655b78f44c98426ea824e17b2, type: 3}
     - {fileID: 4569223526920660701, guid: ec4588c655b78f44c98426ea824e17b2, type: 3}
     - {fileID: 4569223526920660701, guid: 6aa8d277d93de91449a5d214dfc34128, type: 3}

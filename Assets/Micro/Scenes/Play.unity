@@ -1266,80 +1266,6 @@ MonoBehaviour:
   movesText: {fileID: 176583515}
   zenText: {fileID: 675687499}
   levelsText: {fileID: 1754976210}
---- !u!1001 &730117343
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    m_TransformParent: {fileID: 0}
-    m_Modifications:
-    - target: {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_Name
-      value: LevelLearner2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_RootOrder
-      value: 9
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4569223526920660702, guid: 66b882dcd4f5b984a864b0b65439b286,
-        type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
 --- !u!1 &1017264221
 GameObject:
   m_ObjectHideFlags: 0
@@ -1975,7 +1901,7 @@ Camera:
   far clip plane: 1000
   field of view: 60
   orthographic: 1
-  orthographic size: 12
+  orthographic size: 8
   m_Depth: -1
   m_CullingMask:
     serializedVersion: 2
