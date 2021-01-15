@@ -35,6 +35,7 @@ namespace Micro
             public List<Switch> switches = new List<Switch>();
 
             public List<TimeStampData> timeStampData = new List<TimeStampData>();
+            public int timeStampCount;
 
             public void ResetGameObjects()
             {
@@ -46,6 +47,7 @@ namespace Micro
                 switches.Clear();
 
                 timeStampData.Clear();
+                timeStampCount = 0;
             }
         }
 
@@ -135,6 +137,18 @@ namespace Micro
             OnTimeStampClicked?.Invoke(pTimeStampData);
         }
 
+        public TimeStampData GetPreviousTimeStampData()
+        {
+            TimeStampData result = null;
+
+            if (config.timeStampData.Count > 0)
+            {
+                result = Bit.Utils.Slice(config.timeStampData, config.timeStampData.Count - 1);
+            }
+
+            return result;
+        }
+
         public void RecordTimeStamp()
         {
             TimeStampData timeStampData = new TimeStampData();
@@ -146,21 +160,21 @@ namespace Micro
             timeStampData.switches = CloneConfigs(config.switches);
 
             // Clean up textures for leaks
-            Destroy(timeStampData.snapshotTexture);
-            Destroy(timeStampData.snapshotSprite);
+            //Destroy(timeStampData.snapshotTexture);
+            //Destroy(timeStampData.snapshotSprite);
 
-            timeStampData.snapshotTexture = GenerateSnapShotTexture();
-            timeStampData.snapshotSprite = GenerateSnapShotSprite(timeStampData.snapshotTexture);
+            //timeStampData.snapshotTexture = GenerateSnapShotTexture();
+            //timeStampData.snapshotSprite = GenerateSnapShotSprite(timeStampData.snapshotTexture);
 
-            if (config.timeStampData.Count >= 10)
-            {
-                TimeStampData tsd = Bit.Utils.Slice(config.timeStampData, 0);
+            //if (config.timeStampData.Count >= 10)
+            //{
+            //    TimeStampData tsd = Bit.Utils.Slice(config.timeStampData, 0);
 
-                Destroy(tsd.snapshotTexture);
-                Destroy(tsd.snapshotSprite);
+            //    Destroy(tsd.snapshotTexture);
+            //    Destroy(tsd.snapshotSprite);
 
-                config.timeStampData.RemoveAt(0);
-            }
+            //    config.timeStampData.RemoveAt(0);
+            //}
 
             config.timeStampData.Add(timeStampData);
         }

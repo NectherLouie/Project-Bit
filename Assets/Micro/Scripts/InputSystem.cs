@@ -12,7 +12,7 @@ namespace Micro
         public Action<int, int> OnMoveRight;
         public Action<int, int> OnMoveLeft;
         public Action OnResetKeyDown;
-        public Action OnTimelineOpened;
+        public Action OnRewindKeyDown;
 
         private bool inputEnabled = false;
 
@@ -57,7 +57,7 @@ namespace Micro
 
             if (Input.GetKeyDown(KeyCode.T))
             {
-                OnTimelineOpened?.Invoke();
+                OnRewindKeyDown?.Invoke();
             }
         }
     }

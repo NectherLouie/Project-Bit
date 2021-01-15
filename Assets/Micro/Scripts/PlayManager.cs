@@ -45,7 +45,7 @@ namespace Micro
             inputSystem.OnMoveRight += OnMoveInput;
             inputSystem.OnMoveLeft += OnMoveInput;
             inputSystem.OnResetKeyDown += OnResetKeyDown;
-            inputSystem.OnTimelineOpened += OnTimelineOpened;
+            inputSystem.OnRewindKeyDown += OnRewindKeyDown;
             inputSystem.Init();
 
             movementSystem = FindObjectOfType<MovementSystem>();
@@ -72,7 +72,7 @@ namespace Micro
         {
             inputSystem.EnableInput(false);
 
-            //timelineSystem.RecordTimeStamp();
+            timelineSystem.RecordTimeStamp();
 
             gameData.DecreaseMoves();
 
@@ -96,9 +96,20 @@ namespace Micro
             inputSystem.EnableInput(true);
         }
 
-        private void OnTimelineOpened()
+        private void OnRewindKeyDown()
         {
-            timelineSystem.Open();
+            TimelineSystem.TimeStampData timeStampData = timelineSystem.GetPreviousTimeStampData();
+            
+            if (timeStampData != null)
+            {
+                inputSystem.EnableInput(false);
+
+                levelSystem.LoadTimeStamp(timeStampData);
+
+                triggerSystem.TriggerEvents();
+
+                StartCoroutine(Bit.Utils.Wait(0.155f, OnWaitMoveComplete));
+            }
         }
 
         private void OnTimeStampClicked(TimelineSystem.TimeStampData pTimeStampData)
@@ -118,7 +129,7 @@ namespace Micro
             inputSystem.OnMoveRight -= OnMoveInput;
             inputSystem.OnMoveLeft -= OnMoveInput;
             inputSystem.OnResetKeyDown -= OnResetKeyDown;
-            inputSystem.OnTimelineOpened -= OnTimelineOpened;
+            inputSystem.OnRewindKeyDown -= OnRewindKeyDown;
             inputSystem.EnableInput(false);
             StopAllCoroutines();
 

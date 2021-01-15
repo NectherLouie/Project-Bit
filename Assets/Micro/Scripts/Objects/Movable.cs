@@ -51,10 +51,13 @@ namespace Micro
         {
             config.posX = pPos.x;
             config.posY = pPos.y;
-            transform.localPosition = new Vector3(config.posX, config.posY, 0);
 
             config.gridX = (int)pPos.x;
             config.gridY = (int)pPos.y;
+
+            //transform.localPosition = new Vector3(config.posX, config.posY, 0);
+            transform.DOLocalMove(new Vector3(config.posX, config.posY, 0), 0.15f)
+                .OnComplete(OnMoveComplete);
         }
 
         public virtual void MovePosition(float pX, float pY)

@@ -14,18 +14,18 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   levelLearnerData:
     levelPrefabs:
-    - {fileID: 4569223526920660701, guid: 75f4ed0416aa3ac4cb5908cb511ed423, type: 3}
+    - {fileID: 4569223526920660701, guid: 656c658d7947d3c46a44546b82b9aac3, type: 3}
     - {fileID: 4569223526920660701, guid: e4b64a099b96fae49adf89f71b0e4730, type: 3}
     - {fileID: 4569223526920660701, guid: 4fd4da15a9610a8479953e7bc44ec2b7, type: 3}
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
+    - {fileID: 4569223526920660701, guid: 656c658d7947d3c46a44546b82b9aac3, type: 3}
     - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
     config:
       levelType: 0
       unlocked: 1
       completed: 0
-      levelIndex: 0
+      levelIndex: 4
       levelCount: 5
-      moveCount: 95
+      moveCount: -80
       zenModeCount: 1
   levelMovementData:
     levelPrefabs: []
@@ -40,18 +40,18 @@ MonoBehaviour:
   currentLevelType: 0
   currentPlayData:
     levelPrefabs:
-    - {fileID: 4569223526920660701, guid: 4fd4da15a9610a8479953e7bc44ec2b7, type: 3}
+    - {fileID: 4569223526920660701, guid: 75f4ed0416aa3ac4cb5908cb511ed423, type: 3}
     - {fileID: 4569223526920660701, guid: e4b64a099b96fae49adf89f71b0e4730, type: 3}
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
+    - {fileID: 4569223526920660701, guid: 4fd4da15a9610a8479953e7bc44ec2b7, type: 3}
+    - {fileID: 4569223526920660701, guid: 656c658d7947d3c46a44546b82b9aac3, type: 3}
     - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
     config:
       levelType: 0
       unlocked: 1
       completed: 0
-      levelIndex: 0
+      levelIndex: 4
       levelCount: 5
-      moveCount: 95
+      moveCount: -80
       zenModeCount: 1
   previousPlayData:
     levelPrefabs:
@@ -70,18 +70,18 @@ MonoBehaviour:
       zenModeCount: 1
   playDataList:
   - levelPrefabs:
-    - {fileID: 4569223526920660701, guid: 4fd4da15a9610a8479953e7bc44ec2b7, type: 3}
+    - {fileID: 4569223526920660701, guid: 75f4ed0416aa3ac4cb5908cb511ed423, type: 3}
     - {fileID: 4569223526920660701, guid: e4b64a099b96fae49adf89f71b0e4730, type: 3}
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
+    - {fileID: 4569223526920660701, guid: 4fd4da15a9610a8479953e7bc44ec2b7, type: 3}
+    - {fileID: 4569223526920660701, guid: 656c658d7947d3c46a44546b82b9aac3, type: 3}
     - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
     config:
       levelType: 0
       unlocked: 1
       completed: 0
-      levelIndex: 0
+      levelIndex: 4
       levelCount: 5
-      moveCount: 95
+      moveCount: -80
       zenModeCount: 1
   - levelPrefabs: []
     config:
