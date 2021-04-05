@@ -22,7 +22,14 @@ namespace Micro
 
         private void OnTitleClicked()
         {
-            SceneManager.LoadScene((int)SceneIndices.LEVEL_SELECT);
+            ChangeScene();
+        }
+
+        private void ChangeScene()
+        {
+            mainMenuSystem.EnableInput(false);
+
+            SceneManager.LoadScene((int)SceneIndices.PLAY);
         }
     }
 }

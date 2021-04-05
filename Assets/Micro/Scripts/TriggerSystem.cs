@@ -9,6 +9,7 @@ namespace Micro
     {
         public Action<Exit> OnExitActivated;
         public Action<Switch> OnSwitchToggled;
+        public Action<CoinMultiplier> OnCoinMultiplierToggled;
 
         [Serializable]
         public class Config
@@ -17,6 +18,7 @@ namespace Micro
             public List<Box> boxes = new List<Box>();
             public List<Exit> exits = new List<Exit>();
             public List<Switch> switches = new List<Switch>();
+            public List<CoinMultiplier> coinMultipliers = new List<CoinMultiplier>();
 
             public void ResetGameObjects()
             {
@@ -24,6 +26,7 @@ namespace Micro
                 boxes.Clear();
                 exits.Clear();
                 switches.Clear();
+                coinMultipliers.Clear();
             }
         }
 
@@ -37,6 +40,7 @@ namespace Micro
             config.boxes = pConfig.boxes;
             config.exits = pConfig.exits;
             config.switches = pConfig.switches;
+            config.coinMultipliers = pConfig.coinMultipliers;
         }
 
         public void TriggerEvents()
@@ -87,6 +91,18 @@ namespace Micro
                     if (sw.config.gridX == b.config.gridX && sw.config.gridY == b.config.gridY)
                     {
                         OnSwitchToggled?.Invoke(sw);
+                    }
+                }
+            }
+
+            // Coin Multiplier
+            foreach (CoinMultiplier cm in config.coinMultipliers)
+            {
+                foreach (Player p in config.players)
+                {
+                    if (cm.config.gridX == p.config.gridX && cm.config.gridY == p.config.gridY)
+                    {
+                        OnCoinMultiplierToggled?.Invoke(cm);
                     }
                 }
             }

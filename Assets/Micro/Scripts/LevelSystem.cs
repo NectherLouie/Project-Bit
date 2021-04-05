@@ -29,6 +29,9 @@ namespace Micro
 
             [HideInInspector]
             public List<Gate> gates = new List<Gate>();
+
+            [HideInInspector]
+            public List<CoinMultiplier> coinMultipliers = new List<CoinMultiplier>();
         }
 
         public Config config = new Config();
@@ -40,7 +43,7 @@ namespace Micro
             playData = pPlayData;
 
             // Instantiate level prefab using level data
-            GameObject levelObject = Instantiate(playData.levelPrefabs[playData.config.levelIndex]);
+            GameObject levelObject = Instantiate(playData.levelPrefabs[0]);
             
             // Set levelTransform to the instansiated prefab
             config.levelTransform = levelObject.transform;
@@ -52,6 +55,7 @@ namespace Micro
             int gateCount = 0;
             int switchCount = 0;
             int goalIndex = 0;
+            int coinMultiplierCount = 0;
 
             foreach (Transform t in config.levelTransform)
             {
@@ -115,6 +119,16 @@ namespace Micro
                     config.switches.Add(sw);
 
                     switchCount++;
+                }
+
+                if (t.GetComponent<CoinMultiplier>() != null)
+                {
+                    CoinMultiplier cm = t.GetComponent<CoinMultiplier>();
+                    cm.Load(coinMultiplierCount, pos);
+
+                    config.coinMultipliers.Add(cm);
+
+                    coinMultiplierCount++;
                 }
             }
         }

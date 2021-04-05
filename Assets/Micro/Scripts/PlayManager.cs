@@ -56,6 +56,7 @@ namespace Micro
             triggerSystem = FindObjectOfType<TriggerSystem>();
             triggerSystem.OnExitActivated += OnExitActivated;
             triggerSystem.OnSwitchToggled += OnSwitchToggled;
+            triggerSystem.OnCoinMultiplierToggled += OnCoinMultiplierToggled;
             triggerSystem.Init(levelSystem.config);
 
             timelineSystem = FindObjectOfType<TimelineSystem>();
@@ -75,8 +76,10 @@ namespace Micro
             timelineSystem.RecordTimeStamp();
 
             gameData.DecreaseMoves();
+            gameData.IncreaseCoins(1);
 
             hudController.UpdateMoves();
+            hudController.UpdateCoins();
         }
 
         private void OnResetKeyDown()
@@ -143,6 +146,7 @@ namespace Micro
 
             gameData.CompleteLevel();
 
+            /*
             if (!playData.config.completed)
             {
                 SceneManager.LoadScene((int)SceneIndices.PLAY);
@@ -151,11 +155,20 @@ namespace Micro
             {
                 SceneManager.LoadScene((int)SceneIndices.LEVEL_SELECT);
             }
+            */
         }
 
         private void OnSwitchToggled(Switch pSwitch)
         {
             pSwitch.ToggleSwitchOn();
+        }
+
+        private void OnCoinMultiplierToggled(CoinMultiplier pCoinMultiplier)
+        {
+            gameData.IncreaseCoins(-1);
+            gameData.IncreaseCoins(1, pCoinMultiplier.multiplier);
+
+            hudController.UpdateCoins();
         }
     }
 }

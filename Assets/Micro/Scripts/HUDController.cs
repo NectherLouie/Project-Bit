@@ -9,8 +9,7 @@ namespace Micro
     public class HUDController : MonoBehaviour
     {
         public TMP_Text movesText;
-        public TMP_Text zenText;
-        public TMP_Text levelsText;
+        public TMP_Text coinsText;
 
         private PlayData playData;
 
@@ -19,24 +18,17 @@ namespace Micro
             playData = pPlayData;
 
             UpdateMoves();
-            UpdateZenCount();
-            UpdateLevelsText();
+            UpdateCoins();
         }
 
         public void UpdateMoves()
         {
-            movesText.text = playData.config.moveCount.ToString();
+            movesText.text = playData.moveCount.ToString();
         }
 
-        public void UpdateZenCount()
+        public void UpdateCoins()
         {
-            zenText.text = playData.config.zenModeCount.ToString();
-        }
-
-        public void UpdateLevelsText()
-        {
-            int currentLevel = playData.config.levelIndex + 1;
-            levelsText.text = currentLevel.ToString() + "/" + playData.config.levelCount.ToString();
+            coinsText.text = playData.coinCount.ToString();
         }
     }
 }
