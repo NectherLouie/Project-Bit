@@ -426,8 +426,9 @@ GameObject:
   m_Component:
   - component: {fileID: 230969512}
   - component: {fileID: 230969513}
+  - component: {fileID: 230969514}
   m_Layer: 0
-  m_Name: PlayManager
+  m_Name: Managers
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -457,6 +458,23 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 63bddbe94b34e6841b0418bfce3b1503, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  gameData: {fileID: 11400000, guid: f4f55d05a09dc8447babed8dd6e1feb7, type: 2}
+  playData:
+    moveCount: 0
+    coinCount: 0
+    levelPrefabs: []
+--- !u!114 &230969514
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 230969511}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e07b0f799ed96af43a1b3f7f13c51d84, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   gameData: {fileID: 11400000, guid: f4f55d05a09dc8447babed8dd6e1feb7, type: 2}
@@ -1862,7 +1880,7 @@ PrefabInstance:
     - target: {fileID: 6886963980904140949, guid: a19b069997eb08c438116469302b8aaf,
         type: 3}
       propertyPath: m_RootOrder
-      value: 4
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 6886963980904140949, guid: a19b069997eb08c438116469302b8aaf,
         type: 3}

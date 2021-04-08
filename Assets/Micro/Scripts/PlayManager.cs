@@ -19,7 +19,7 @@ namespace Micro
 
         private HUDController hudController;
 
-        private void Awake()
+        private void Awaken()
         {
             playData = gameData.GetCurrentPlayData();
 
