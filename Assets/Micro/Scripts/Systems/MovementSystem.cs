@@ -42,13 +42,16 @@ namespace Micro
 
         public void Init(LevelSystem.Config pConfig)
         {
-            config.ResetGameObjects();
-            config.ResetPlayData();
-
             config.players = pConfig.players;
             config.boxes = pConfig.boxes;
             config.walls = pConfig.walls;
             config.gates = pConfig.gates;
+        }
+
+        public void Unload()
+        {
+            config.ResetGameObjects();
+            config.ResetPlayData();
         }
 
         public void Move(int pVertical, int pHorizontal)

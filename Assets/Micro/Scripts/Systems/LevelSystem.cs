@@ -32,18 +32,23 @@ namespace Micro
 
             [HideInInspector]
             public List<CoinMultiplier> coinMultipliers = new List<CoinMultiplier>();
+
+            [HideInInspector]
+            public List<Entrance> entrances = new List<Entrance>();
         }
 
         public Config config = new Config();
 
         private PlayData playData;
 
+        private GameObject levelObject;
+
         public void Init(PlayData pPlayData)
         {
             playData = pPlayData;
 
             // Instantiate level prefab using level data
-            GameObject levelObject = Instantiate(playData.levelPrefabs[0]);
+            levelObject = Instantiate(playData.levelPrefabs[playData.levelIndex]);
             
             // Set levelTransform to the instansiated prefab
             config.levelTransform = levelObject.transform;
@@ -56,10 +61,11 @@ namespace Micro
             int switchCount = 0;
             int goalIndex = 0;
             int coinMultiplierCount = 0;
+            int entranceCount = 0;
 
             foreach (Transform t in config.levelTransform)
             {
-                Vector3 pos = t.position;
+                Vector3 pos = t.localPosition;
 
                 if (t.GetComponent<Player>() != null)
                 {
@@ -130,7 +136,23 @@ namespace Micro
 
                     coinMultiplierCount++;
                 }
+
+                if (t.GetComponent<Entrance>() != null)
+                {
+                    Entrance ent = t.GetComponent<Entrance>();
+                    ent.Load(entranceCount, pos);
+
+                    config.entrances.Add(ent);
+
+                    entranceCount++;
+                }
             }
+        }
+
+        public void Unload()
+        {
+            Destroy(levelObject);
+            levelObject = null;
         }
 
         public void LoadTimeStamp(TimelineSystem.TimeStampData pTimeStampData)

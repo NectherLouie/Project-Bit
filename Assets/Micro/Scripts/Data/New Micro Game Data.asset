@@ -12,9 +12,16 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b60d3cacbce7a52439a5085fbe3054a1, type: 3}
   m_Name: New Micro Game Data
   m_EditorClassIdentifier: 
+  hubData:
+    levelIndex: 0
+    moveCount: 0
+    coinCount: 0
+    levelPrefabs:
+    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
   playData:
+    levelIndex: 0
     moveCount: -94
     coinCount: 103
     levelPrefabs:
-    - {fileID: 4569223526920660701, guid: 66b882dcd4f5b984a864b0b65439b286, type: 3}
+    - {fileID: 4569223526920660701, guid: 75f4ed0416aa3ac4cb5908cb511ed423, type: 3}
   gameComplete: 0

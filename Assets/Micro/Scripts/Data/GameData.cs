@@ -8,6 +8,7 @@ namespace Micro
     [Serializable]
     public class PlayData
     {
+        public int levelIndex = 0;
         public int moveCount;
         public int coinCount;
 
@@ -20,14 +21,22 @@ namespace Micro
 
         public void Reset()
         {
+            levelIndex = 0;
             moveCount = 0;
             coinCount = 0;
         }
     }
 
+    [Serializable]
+    public class HubData: PlayData
+    {
+
+    }
+
     [CreateAssetMenu(fileName = "New Micro Game Data", menuName = "Micro Game Data")]
     public class GameData : ScriptableObject
     {
+        public HubData hubData = new HubData();
         public PlayData playData = new PlayData();
 
         public bool gameComplete = false;
@@ -37,6 +46,11 @@ namespace Micro
             gameComplete = false;
 
             playData.Reset();
+        }
+
+        public HubData GetHubData()
+        {
+            return hubData;
         }
 
         public PlayData GetCurrentPlayData()

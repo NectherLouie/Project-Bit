@@ -10,6 +10,7 @@ namespace Micro
         public Action<Exit> OnExitActivated;
         public Action<Switch> OnSwitchToggled;
         public Action<CoinMultiplier> OnCoinMultiplierToggled;
+        public Action<Entrance> OnEntranceActivated;
 
         [Serializable]
         public class Config
@@ -19,6 +20,7 @@ namespace Micro
             public List<Exit> exits = new List<Exit>();
             public List<Switch> switches = new List<Switch>();
             public List<CoinMultiplier> coinMultipliers = new List<CoinMultiplier>();
+            public List<Entrance> entrances = new List<Entrance>();
 
             public void ResetGameObjects()
             {
@@ -27,6 +29,7 @@ namespace Micro
                 exits.Clear();
                 switches.Clear();
                 coinMultipliers.Clear();
+                entrances.Clear();
             }
         }
 
@@ -34,13 +37,17 @@ namespace Micro
 
         public void Init(LevelSystem.Config pConfig)
         {
-            config.ResetGameObjects();
-
             config.players = pConfig.players;
             config.boxes = pConfig.boxes;
             config.exits = pConfig.exits;
             config.switches = pConfig.switches;
             config.coinMultipliers = pConfig.coinMultipliers;
+            config.entrances = pConfig.entrances;
+        }
+
+        public void Unload()
+        {
+            config.ResetGameObjects();
         }
 
         public void TriggerEvents()
@@ -103,6 +110,18 @@ namespace Micro
                     if (cm.config.gridX == p.config.gridX && cm.config.gridY == p.config.gridY)
                     {
                         OnCoinMultiplierToggled?.Invoke(cm);
+                    }
+                }
+            }
+
+            // Entrances
+            foreach (Entrance entrance in config.entrances)
+            {
+                foreach (Player p in config.players)
+                {
+                    if (entrance.config.gridX == p.config.gridX && entrance.config.gridY == p.config.gridY)
+                    {
+                        OnEntranceActivated?.Invoke(entrance);
                     }
                 }
             }

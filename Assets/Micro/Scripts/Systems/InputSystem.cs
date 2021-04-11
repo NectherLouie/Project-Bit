@@ -21,6 +21,12 @@ namespace Micro
             EnableInput(true);
         }
 
+
+        public void Unload()
+        {
+            EnableInput(false);
+        }
+
         public void EnableInput(bool pEnabled)
         {
             inputEnabled = pEnabled;

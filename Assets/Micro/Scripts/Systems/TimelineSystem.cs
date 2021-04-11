@@ -63,14 +63,17 @@ namespace Micro
 
         public void Init(LevelSystem.Config pConfig)
         {
-            config.ResetGameObjects();
-
             config.players = pConfig.players;
             config.boxes = pConfig.boxes;
             config.walls = pConfig.walls;
             config.exits = pConfig.exits;
             config.gates = pConfig.gates;
             config.switches = pConfig.switches;
+        }
+
+        public void Unload()
+        {
+            config.ResetGameObjects();
         }
 
         public void Open()

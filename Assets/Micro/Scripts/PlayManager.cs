@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -7,6 +8,9 @@ namespace Micro
 {
     public class PlayManager : MonoBehaviour
     {
+        public Action OnLoadComplete;
+        public Action OnUnloadComplete;
+
         public GameData gameData;
         public PlayData playData;
 
@@ -19,7 +23,14 @@ namespace Micro
 
         private HUDController hudController;
 
-        private void Awaken()
+        private GameStateManager gameStateManager;
+
+        private void Awake()
+        {
+            gameStateManager = FindObjectOfType<GameStateManager>();
+        }
+
+        public void Load()
         {
             playData = gameData.GetCurrentPlayData();
 
@@ -62,6 +73,40 @@ namespace Micro
             timelineSystem = FindObjectOfType<TimelineSystem>();
             timelineSystem.OnTimeStampClicked += OnTimeStampClicked;
             timelineSystem.Init(levelSystem.config);
+
+            OnLoadComplete?.Invoke();
+        }
+
+        public void Unload()
+        {
+            levelSystem.Unload();
+
+            inputSystem.OnMoveUp -= OnMoveInput;
+            inputSystem.OnMoveDown -= OnMoveInput;
+            inputSystem.OnMoveRight -= OnMoveInput;
+            inputSystem.OnMoveLeft -= OnMoveInput;
+            inputSystem.OnResetKeyDown -= OnResetKeyDown;
+            inputSystem.OnRewindKeyDown -= OnRewindKeyDown;
+            inputSystem.Unload();
+            
+            StartCoroutine(Bit.Utils.Wait(1.0f, OnUnloaded));
+        }
+
+        private void OnUnloaded()
+        {
+            movementSystem.OnMoveSucceeded -= OnMoveSucceeded;
+            movementSystem.OnMoveComplete -= OnMoveComplete;
+            movementSystem.Unload();
+
+            triggerSystem.OnExitActivated -= OnExitActivated;
+            triggerSystem.OnSwitchToggled -= OnSwitchToggled;
+            triggerSystem.OnCoinMultiplierToggled -= OnCoinMultiplierToggled;
+            triggerSystem.Unload();
+
+            timelineSystem.OnTimeStampClicked -= OnTimeStampClicked;
+            timelineSystem.Unload();
+
+            OnUnloadComplete?.Invoke();
         }
 
         private void OnMoveInput(int pVertical, int pHorizontal)
@@ -146,16 +191,7 @@ namespace Micro
 
             gameData.CompleteLevel();
 
-            /*
-            if (!playData.config.completed)
-            {
-                SceneManager.LoadScene((int)SceneIndices.PLAY);
-            }
-            else
-            {
-                SceneManager.LoadScene((int)SceneIndices.LEVEL_SELECT);
-            }
-            */
+            gameStateManager.ChangeToHub();
         }
 
         private void OnSwitchToggled(Switch pSwitch)
